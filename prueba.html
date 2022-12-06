@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>JMap Core</title>
+    <link rel="stylesheet" href="./css/style.css">
+  </head>
+  <body class="jmap_wrapper">
+  	<div id="my-custom-map"></div>
+    <script type="text/javascript">
+      window.JMAP_OPTIONS = {
+        projectId: 7,
+        restBaseUrl: "https://111.123.25.445/services/rest/v2.0",
+        anonymous: true,
+        map: {
+          containerId: "my-custom-map",
+          zoom: 8.702330187924481,
+          center: {
+            x: -73.71123535973672,
+            y: 45.565083749787306
+          },
+          scaleControlVisible: true,
+          scaleControlPosition: "top-right"
+        }
+      }
+    </script>
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/jmap-core-js@7_Kathmandu_HF3"></script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta charset="UTF-8">
+  <style>
+    #my-custom-app {
+      position: relative;
+      overflow: hidden;
+      margin-left: 50px;
+      margin-top: 50px;
+      width: 850px;
+      height: 700px;
+      border: 1px solid grey;
+    }
+  </style>
+  <title>JMap NG</title>
+</head>
+
+<body>
+  <div id="my-custom-app"></div>
+  <script type="text/javascript">
+    window.JMAP_OPTIONS = {
+      projectId: 1,
+      restBaseUrl: "https://jmapdoc.jmaponline.net/services/rest/v2.0",
+      anonymous: true,
+      map: {
+        zoom: 8.468052241302663,
+        center: {
+          x: -74.049048172276,
+          y: 45.53583011032552
+        }
+      },
+      hideMainLayout: true,
+      application: {
+        containerId: "my-custom-app"
+      }
+    }
+  </script>
+  <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/jmap-app-js@7_Kathmandu_HF3"></script>
+</body>
+
+</html>
