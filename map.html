@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- TITLE -->
+    <title>MINDEF | Policia Nacional del Perú (PNP)</title>
+    <link rel="icon" href="./img/icon.jpg">
+    <!-- META -->
+    <meta charset="UTF-8">
+    <meta name="viewport"     content="width=device-width, initial-scale=1">
+    <meta name="description"  content="Ministerio de Defensa | Policia Nacional del Perú"/>
+    <meta name="keywords"     content="Denuncias"/>
+    <meta name="author"       content="Ing. Francisco Rojas, Ing. Oswaldo Bardales e Ing. Heber Daniel Ramos Mendoza"/>
+    <meta name="copyright"    content="Copyright - Ministerio de Defensa (MINDEF) | Policia Nacional del Perú (PNP)"/>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.2.0/css/dataTables.dateTime.min.css">
+    <link rel="stylesheet" href="./css/style_2.css">
+    <style>
+      #my-custom-app {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 60vh !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="col-left">
+      <form>
+        <h6>1. DATOS DE USUARIO</h6>
+        <hr>
+        <!-- Usuario -->
+        <div class="row form-group">
+            <label class="col-sm-5 col-form-label text-right">Usuario</label>
+            <div class="col-sm-7">
+              <p class="form-control-plaintext" id="ID_Usuario">... Cargando</p>
+            </div>
+        </div>
+        <!-- Comisaria -->
+        <div class="row form-group">
+          <label class="col-sm-5 col-form-label text-right">Comisaría</label>
+          <div class="col-sm-7">
+            <p class="form-control-plaintext" id="ID_Comisaria">... Cargando</p>
+          </div>
+        </div>
+        <h6>2. FILTROS</h6>
+        <hr>
+        <!-- Jurisdiccion -->
+        <div class="row form-group">
+          <label class="col-sm-5 col-form-label text-right">Jurisdicción</label>
+          <div class="col-sm-7">
+            <p class="form-control-plaintext" id="ID_Jurisdiccion">... Cargando</p>
+          </div>
+        </div>
+        <!-- Año -->
+        <div class="row form-group" style="display: none;">
+          <label class="col-sm-5 col-form-label text-right">Año</label>
+          <div class="col-sm-7 text-left">
+              <select class="form-control form-control-sm" id="ID_Anio">
+                <option selected>... Cargando</option>
+              </select>
+          </div>
+        </div>
+        <!-- Tipo de Vista -->
+        <div class="row form-group">
+          <label class="col-sm-5 col-form-label text-right">Vista</label>
+          <div class="col-sm-7 text-left">
+            <select class="form-control form-control-sm" id="ID_Vista" >
+              <option selected>... Cargando</option>
+            </select>
+          </div>
+        </div>
+      </form>
+      <h6>3. GRÁFICO</h6>
+      <hr>
+      <section class="canvas-pie">
+        <canvas id="ID_Pie"></canvas>
+      </section>
+      <section class="canvas-bar">
+        <canvas id="ID_Bar" height="500"></canvas>
+      </section>
+
+      <!-- Modal -->
+      <div class="modal fade" id="ID_Modal_Visitas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Lista de Visitas</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- TABLE -->
+              <section class="table-content">
+                <table class="table table-sm" class="display" id="ID_TB_VISITAS" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Ubicación</th>
+                      <th>Fecha de Visita</th>
+                      <th>Documento Referencial</th>
+                      <th>Hechos Advertidos</th>
+                      <th>Presencia de Victima</th>
+                      <th>Presencia de Menores</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </section>
+              <!-- /TABLE -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+
+      <!-- Modal -->
+      <div class="modal fade" id="ID_Modal_Detalle" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Medida de Protección</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- TABLE -->
+              <div class="row">
+                <label class="col-sm-6 font-weight-bold">JUZGADO ASIGNADO</label>
+                <div class="col-sm-6">Juzgado de Familiar</div>
+              </div>
+
+              <div class="row">
+                <label class="col-sm-6 font-weight-bold">JUZGADO INSTANCIA</label>
+                <div class="col-sm-6">12vo Juzgado Familiar</div>
+              </div>
+
+              <div class="row">
+                <label class="col-sm-6 font-weight-bold">EXPEDIENTE JUDICIAL</label>
+                <div class="col-sm-6">455-2589</div>
+              </div>
+
+              <div class="row">
+                <label class="col-sm-6 font-weight-bold">MATERIAL EXP.</label>
+                <div class="col-sm-6">Violencia sexual</div>
+              </div>
+
+              <div class="row">
+                <label class="col-sm-6 font-weight-bold">DENUNCIADO</label>
+                <div class="col-sm-6">Daniel Ramos Pezo</div>
+              </div>
+
+              <div class="row">
+                <label class="col-sm-6 font-weight-bold">DENUNCIANTE</label>
+                <div class="col-sm-6">Oswaldo Mendoza</div>
+              </div>
+
+              <div class="row">
+                <label class="col-sm-6 font-weight-bold">NÚMERO DE RESOLUCIÓN</label>
+                <div class="col-sm-6">45217</div>
+              </div>
+
+              <div class="row">
+                <label class="col-sm-6 font-weight-bold">FECHA EMISIÓN</label>
+                <div class="col-sm-6">15/09/2022</div>
+              </div>
+
+              
+                
+              
+              <!-- /TABLE -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+    
+
+    </div>
+    <div class="col-right">
+      <div id="my-custom-app"></div>
+      <!-- TABLE -->
+      <section class="table-content">
+        <div class="row form-group">
+          <div class="col-sm-3" style="display: none;">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+              <input type="text" class="form-control form-control-sm" placeholder="Fecha Registro Inicio " id="min" name="min">
+            </div>
+          </div>
+          <div class="col-sm-3" style="display: none;">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+              <input type="text" class="form-control form-control-sm" placeholder="Fecha Registro Fin" id="max" name="max">
+            </div>
+          </div>
+          <div class="col-sm-2" style="display: none;"></div>
+          <div class="col-sm-2 float-right">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-search "></i>
+                </span>
+              </div>
+              <input type="text" class="form-control form-control-sm" placeholder="Ingrese dato" id="ID_BTN_DATO">
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <button class="btn btn-sm btn-primary" id="ID_TB_BUSCAR">Consultar</button>
+            <button class="btn btn-sm btn-primary" id="ID_TB_LIMPIAR">Limpiar</button>  
+          </div>
+        </div>
+        <div>
+          
+          
+        </div>
+        <table class="table table-sm display nowrap" id="ID_TB_JURISDICCION" class="display" style="width:100%">
+          <thead>
+            <tr>
+              <th colspan="8" class="text-center">DATO GENERAL</th>
+              <th colspan="7" class="text-center bg-danger">DENUNCIA</th>
+              <th colspan="6" class="text-center bg-warning">HECHO</th>
+            </tr>
+            <tr>
+              <th>#</th>
+              <th class="text-center">Zoom</th>
+              <th class="text-center">Detalle</th>
+              <th class="text-center">Comisaría</th>
+              <th class="text-center">Modalidad</th>
+              <th class="text-center">Tipo</th>
+              <th class="text-center">Region</th>
+              <th class="text-center">Libro</th>
+
+              <th class="text-center">Tipo Doc.</th>
+              <th class="text-center">Departamento</th>
+              <th class="text-center">Provincia</th>
+              <th class="text-center">Distrito</th>
+              <th class="text-center">Ubigeo</th>
+              <th class="text-center">Dirección</th>
+              <th class="text-center">Fecha Registro</th>
+
+              <th class="text-center">Visita</th>
+              <th class="text-center">Departamento</th>
+              <th class="text-center">Provincia</th>
+              <th class="text-center">Distrito</th>
+              <th class="text-center">Ubigeo</th>
+              <th class="text-center">Fecha Registro</th>
+
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <!-- <tfoot>
+            <tr>
+              <th></th>
+              <th>Zoom</th>
+            </tr>
+          </tfoot>-->
+        </table>
+      </section>
+      <!-- /TABLE -->
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.2.0/js/dataTables.dateTime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    
+    <script src="./js/jmap.js"></script>
+    <script src="./js/graphic.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jmap-app-js@7_Kathmandu_HF3" defer></script>
+  </body>
+</html>
