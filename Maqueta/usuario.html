@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" >
+     <head>
+          <!-- TITLE -->
+          <title>MINDEF | Policia Nacional del Perú (PNP)</title>
+          <link rel="icon" href="./img/icon.jpg">
+          <!-- META -->
+          <meta charset="UTF-8">
+          <meta name="viewport"     content="width=device-width, initial-scale=1">
+          <meta name="description"  content="Ministerio de Defensa | Policia Nacional del Perú"/>
+          <meta name="keywords"     content="Denuncias"/>
+          <meta name="author"       content="Ing. Francisco Rojas, Ing. Oswaldo Bardales e Ing. Heber Daniel Ramos Mendoza"/>
+          <meta name="copyright"    content="Copyright - Ministerio de Defensa (MINDEF) | Policia Nacional del Perú (PNP)"/>
+          <!-- CSS -->
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+          <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+          <link rel="stylesheet" href="./css/style_main.css">
+     </head>
+	<body>
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                         <li class="nav-item" id="ID_TAB_INICIO">
+                              <a class="nav-link font-weight-bold" href="./inicio.html">INICIO</a>
+                         </li>
+                         <li class="nav-item active" id="ID_TAB_USUARIOS">
+                              <a class="nav-link font-weight-bold" href="./usuario.html">USUARIOS</a>
+                         </li>
+                         <li class="nav-item" id="ID_TAB_JURISDICCION">
+                              <a class="nav-link font-weight-bold" href="./jurisdiccion.html">JURISDICCIÓN</a>
+                         </li>
+                         <li class="nav-item" id="ID_TAB_AUDITORIA">
+                              <a class="nav-link font-weight-bold" href="./auditoria.html">AUDITORÍA</a>
+                         </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                         <span class="navbar-text" style="padding: 0 20px 0 0;">
+                              <h6 style="margin: 0;">Bienvenido: </h6>
+                              <h5 style="margin: 0; font-size: 13px;" id="ID_Usuario" class="font-weight-bold">... Cargando</h5>
+                            </span>
+                         <button class="btn btn-outline-danger btn-sm my-2 my-sm-0" type="button" id="ID_SALIR">
+                              <i class="fa fa-sign-out"></i> Salir
+                         </button>
+                    </form>
+               </div>
+          </nav>
+          <!-- CONTAINER -->
+          <div class="container">
+               <br>
+               <div class="row">
+                    <div class="col">
+                         <h4 class="text-center">USUARIOS</h4>
+                         <hr>
+                    </div>                    
+               </div>
+               <div class="row">
+                    <div class="col">
+                         <!--
+                         <ul class="nav nav-tabs">
+                              <li class="nav-item">
+                                   <a class="nav-link active" data-toggle="tab" href="#ID_TAB_USUARIO">Usuario</a>
+                              </li>
+                              <li class="nav-item">
+                                   <a class="nav-link" data-toggle="tab" href="#ID_TAB_ROL">Rol</a>
+                              </li>
+                         </ul>
+                         <div class="tab-content">
+                              <div class="tab-pane container active" id="ID_TAB_USUARIO">
+                                   <br>
+                                   
+                              </div>
+                              <div class="tab-pane container fade" id="ID_TAB_ROL">
+                                   <br>
+                                   <div class="row">
+                                        <div class="col">
+                                             <h6>Lista de Roles</h6>
+                                             <table class="table table-sm display nowrap" id="ID_TB_ROL" class="display" style="width:100%">
+                                                  <thead>
+                                                       <tr>
+                                                            <th>#</th>
+                                                            <th class="text-center">NOMBRE</th>
+                                                            <th class="text-center">TIPO</th>
+                                                            <th class="text-center">ACCIÓN</th>
+                                                       </tr>
+                                                  </thead>
+                                                  <tbody></tbody>
+                                             </table>
+                                             <hr>
+                                             <div class="row">
+                                                  <div class="col">
+                                                       <button class="btn btn-sm my-2 my-sm-0" type="button" data-toggle='modal' data-target='#ID_Modal_ROL' role="tab">
+                                                            <i class="fa fa-plus"></i> Nuevo
+                                                       </button>
+                                                       <button class="btn btn-sm btn-outline-secondary my-2 my-sm-0" type="button" id="ID_LIST_ROL">
+                                                            <i class="fa fa-refresh"></i> Refrescar
+                                                       </button>
+                                                  </div>
+                                             </div>
+                                             <div id="ID_SEND_ROL"></div>
+                                        </div>
+                                       
+                                   </div>
+                              </div>
+                         </div>
+                         -->
+                         <div class="row">
+                              <!-- TABLA - USUARIOS -->
+                              <div class="col">
+                                   <!--<h6>Lista de Usuarios</h6>-->
+                                   <table class="table table-sm" id="ID_TB_USUARIOS" class="display" style="width:100%">
+                                        <thead>
+                                             <tr>
+                                                  <th>#</th>
+                                                  <th class="text-center">CIP</th>
+                                                  <th class="text-center">NOMBRE</th>
+                                                  <th class="text-center">COD. UNIDAD</th>
+                                                  <th class="text-center">ROL</th>
+                                                  <th class="text-center">NOMBRE USUARIO</th>
+                                                  <th class="text-center">CORREO</th>
+                                                  <th class="text-center">CLAVE</th>
+                                                  <th class="text-center">ACCIÓN</th>
+                                             </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                   </table>
+                                   <hr>
+                                   <div class="row">
+                                        <div class="col">
+                                             <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="button" data-toggle='modal' data-target='#ID_Modal_USUARIO' role="tab">
+                                                  <i class="fa fa-plus"></i> Nuevo
+                                             </button>
+                                             <button class="btn btn-sm btn-outline-secondary my-2 my-sm-0" type="button" id="ID_LIST_USUARIO">
+                                                  <i class="fa fa-refresh"></i> Refrescar
+                                             </button>
+                                        </div>
+                                   </div>
+                                   <div id="ID_SEND_USUARIO"></div>
+                              </div>
+                              <!-- /TABLA - USUARIOS -->
+                         </div>
+                    </div>
+               </div>
+          </div>
+          <!-- /CONTAINER -->
+
+          <!-- Modal USUARIO NUEVO -->
+          <div class="modal fade" id="ID_Modal_USUARIO" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                         <div class="modal-header">
+                              <h5 class="modal-title">Nuevo USUARIO</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                   <span aria-hidden="true">&times;</span>
+                              </button>
+                         </div>
+                         <div class="modal-body">
+                              <div class="form-group row">
+                                   <label for="ID_USU_NOMBRE" class="col-sm-4 col-form-label text-right">(*) CIP :</label>
+                                   <div class="col-sm-8">
+                                        <input type="number" class="form-control" id="ID_USU_CIP" placeholder="Ingrese CIP" maxlength="50" pattern="[0-9]+">
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_USU_NOMBRE" class="col-sm-4 col-form-label text-right">(*) Nombre :</label>
+                                   <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="ID_USU_NOMBRE" placeholder="Ingrese nombre" maxlength="50">
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_USU_UNIDAD" class="col-sm-4 col-form-label text-right">(*) Código de Unidad :</label>
+                                   <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="ID_USU_UNIDAD" placeholder="Ingrese código de unidad" maxlength="50" pattern="[0-9]+">
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_USU_TIPO" class="col-sm-4 col-form-label text-right">(*) Tipo de Rol :</label>
+                                   <div class="col-sm-8">
+                                        <select class="custom-select" id="ID_USU_TIPO">
+                                             <option value="user">Usuario</option>
+                                             <option value="admin">Administrador</option>
+                                        </select>
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_USU_USUARIO" class="col-sm-4 col-form-label text-right">(*) Nombre de Usuario:</label>
+                                   <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="ID_USU_USUARIO" placeholder="Ingrese nombre de usuario" maxlength="50">
+                                   </div>
+                              </div> 
+                              <div class="form-group row">
+                                   <label for="ID_USU_CORREO" class="col-sm-4 col-form-label text-right">(*) Correo:</label>
+                                   <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="ID_USU_CORREO" placeholder="Ingrese correo" maxlength="50">
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_USU_CLAVE" class="col-sm-4 col-form-label text-right">(*) Contraseña :</label>
+                                   <div class="col-sm-8">
+                                        <input type="password" class="form-control" id="ID_USU_CLAVE" placeholder="Ingrese contraseña" maxlength="150">
+                                   </div>
+                              </div>
+                              <div id="ID_ALERTA_USUARIO"></div>
+                         </div>
+                         <div class="modal-footer">
+                              <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" id="ID_USU_NUE_GUARDAR">
+                                   <i class="fa fa-save"></i> Guardar
+                              </button>
+                              <button type="button" class="btn btn-sm btn-outline-secondary my-2 my-sm-0" id="ID_USU_NUE_LIMPIAR">
+                                   <i class="fa fa-eraser"></i> Limpiar
+                              </button>
+                              <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">
+                                   <i class="fa fa-times"></i> Cerrar
+                              </button>
+                         </div>
+                    </div>
+               </div>
+          </div>
+          <!-- /Modal USUARIO NUEVO -->
+
+          <!-- Modal USUARIO EDITAR -->
+          <div class="modal fade" id="ID_Modal_EDI_USUARIO" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                         <div class="modal-header">
+                              <h5 class="modal-title">Editar USUARIO</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                   <span aria-hidden="true">&times;</span>
+                              </button>
+                         </div>
+                         <div class="modal-body">
+                              <div class="form-group row">
+                                   <label for="ID_USU_EDI_NOMBRE" class="col-sm-4 col-form-label text-right">(*) CIP :</label>
+                                   <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="ID_USU_EDI_CIP" placeholder="Ingrese CIP" disabled>
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_USU_EDI_NOMBRE" class="col-sm-4 col-form-label text-right">(*) Nombre :</label>
+                                   <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="ID_USU_EDI_NOMBRE" placeholder="Ingrese nombre">
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_USU_EDI_UNIDAD" class="col-sm-4 col-form-label text-right">(*) Código de Unidad :</label>
+                                   <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="ID_USU_EDI_UNIDAD" placeholder="Ingrese código de unidad">
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_USU_EDI_TIPO" class="col-sm-4 col-form-label text-right">Tipo de Rol :</label>
+                                   <div class="col-sm-8">
+                                        <select class="custom-select" id="ID_USU_EDI_TIPO">
+                                             <option value="user">Usuario</option>
+                                             <option value="admin">Administrador</option>
+                                        </select>
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_USU_USUARIO" class="col-sm-4 col-form-label text-right">(*) Nombre de Usuario:</label>
+                                   <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="ID_USU_EDI_USUARIO" placeholder="Ingrese nombre de usuario" disabled>
+                                   </div>
+                              </div> 
+                              <div class="form-group row">
+                                   <label for="ID_USU_EDI_CORREO" class="col-sm-4 col-form-label text-right">(*) Correo:</label>
+                                   <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="ID_USU_EDI_CORREO" placeholder="Ingrese correo" disabled>
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_USU_EDI_CLAVE" class="col-sm-4 col-form-label text-right">Contraseña :</label>
+                                   <div class="col-sm-8">
+                                        <input type="password" class="form-control" id="ID_USU_EDI_CLAVE" placeholder="Ingrese contraseña">
+                                   </div>
+                              </div>
+                              <input type="hidden" id="ID_USU_EDI_ID"/>
+                              <input type="hidden" id="ID_USU_EDI_CLAVE"/>
+                              <div id="ID_ALERTA_EDI_USUARIO"></div>
+                         </div>
+                         <div class="modal-footer">
+                              <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" id="ID_USU_EDI_GUARDAR">
+                                   <i class="fa fa-save"></i> Guardar
+                              </button>
+                              <!-- 
+                              <button type="button" class="btn btn-sm btn-outline-secondary my-2 my-sm-0" id="ID_USU_EDI_LIMPIAR">
+                                   <i class="fa fa-eraser"></i> Limpiar
+                              </button>
+                              -->
+                              <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">
+                                   <i class="fa fa-times"></i> Cerrar
+                              </button>
+                         </div>
+                    </div>
+               </div>
+          </div>
+          <!-- /Modal USUARIO EDITAR -->
+
+          <!-- Modal USUARIO ELIMINAR -->
+          <div class="modal fade" id="ID_Modal_DEL_USUARIO" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                         <div class="modal-header">
+                              <h5 class="modal-title">Ventana de Confirmación</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                   <span aria-hidden="true">&times;</span>
+                              </button>
+                         </div>
+                         <div class="modal-body">
+                              <div class="alert alert-warning text-center" role="alert">
+                                   ¿Eliminara el <strong>USUARIO</strong>?
+                              </div>
+                              <input type="hidden" id="ID_USU_DEL_ID"/>
+                         </div>
+                         <div class="modal-footer">
+                              <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" id="ID_USU_DEL_GUARDAR">SI</button>
+                              <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">NO</button>
+                         </div>
+                    </div>
+               </div>
+          </div>              
+          <!-- Modal USUARIO ELIMINAR -->
+
+          <!-- Modal ROL NUEVO
+          <div class="modal fade" id="ID_Modal_ROL" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                         <div class="modal-header">
+                              <h5 class="modal-title">Nuevo ROL</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                   <span aria-hidden="true">&times;</span>
+                              </button>
+                         </div>
+                         <div class="modal-body">
+                              <div class="form-group row">
+                                   <label for="ID_ROL_NOMBRE" class="col-sm-2 col-form-label text-right">Nombre :</label>
+                                   <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="ID_ROL_NOMBRE" placeholder="Ingrese nombre">
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_ROL_TIPO" class="col-sm-2 col-form-label text-right">Tipo de Rol :</label>
+                                   <div class="col-sm-10">
+                                        <select class="custom-select my-1 mr-sm-2" id="ID_ROL_TIPO">
+                                             <option value="ROLE_USER">ROLE_USER</option>
+                                             <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                                        </select>
+                                   </div>
+                              </div>
+                              <div ID="ID_ALERTA_ROL"></div>
+                         </div>
+                         <div class="modal-footer">
+                              <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" onclick="_guardarRol()">
+                                   <i class="fa fa-save"></i> Guardar
+                              </button>
+                              <button type="button" class="btn btn-sm btn-outline-secondary my-2 my-sm-0" onclick="_limpiarRol()">
+                                   <i class="fa fa-eraser"></i> Limpiar
+                              </button>
+                              <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">
+                                   <i class="fa fa-times"></i> Cerrar
+                              </button>
+                         </div>
+                    </div>
+               </div>
+          </div>
+          /Modal ROL NUEVO -->
+
+          <!-- Modal ROL EDITAR
+          <div class="modal fade" id="ID_Modal_EDI_ROL" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                         <div class="modal-header">
+                              <h5 class="modal-title">Editar ROL</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                   <span aria-hidden="true">&times;</span>
+                              </button>
+                         </div>
+                         <div class="modal-body">
+                              <div class="form-group row">
+                                   <label for="ID_ROL_NOMBRE" class="col-sm-2 col-form-label text-right">Nombre :</label>
+                                   <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="ID_ROL_EDI_NOMBRE" placeholder="Ingrese nombre">
+                                   </div>
+                              </div>
+                              <div class="form-group row">
+                                   <label for="ID_ROL_TIPO" class="col-sm-2 col-form-label text-right">Tipo de Rol :</label>
+                                   <div class="col-sm-10">
+                                        <select class="custom-select my-1 mr-sm-2" id="ID_ROL_EDI_TIPO">
+                                        <option selected>Seleccionar Rol</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                        </select>
+                                   </div>
+                              </div>
+                              <div ID="ID_ALERTA_EDI_ROL"></div>
+                         </div>
+                         <div class="modal-footer">
+                              <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" onclick="_guardarEditarRol()">
+                                   <i class="fa fa-save"></i> Guardar
+                              </button>
+                              <button type="button" class="btn btn-sm btn-outline-secondary my-2 my-sm-0" onclick="_limpiarEditarRol()">
+                                   <i class="fa fa-eraser"></i> Limpiar
+                              </button>
+                              <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">
+                                   <i class="fa fa-times"></i> Cerrar
+                              </button>
+                         </div>
+                    </div>
+               </div>
+          </div>
+          /Modal ROL EDITAR -->
+
+          <!-- JS -->
+          <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+          <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+          <script src="https://cdn.datatables.net/datetime/1.2.0/js/dataTables.dateTime.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+		<script  src="./js/script_usuario.js"></script>
+     </body>
+</html>

@@ -1,0 +1,260 @@
+* { box-sizing: content-box; }
+#app-map {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 700px;
+    border: 0px solid grey;
+}
+.col-content .col-left {
+    background-color: #2E3935;   
+    color: #FFFFFF;
+}
+.col-content .col-right .col-table{
+    background-color: #2E3935;
+}
+.col-content .col-left,
+.col-content .col-right {
+    font-size: 13px;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    border: 0;
+}
+.col-content .col-left {
+    width: 19.5%;
+}
+.col-content .col-right {
+    width: 80%;
+}
+.btn-salir {
+    position: fixed;
+    right: 0;
+    top: 0;
+    margin: 5px 7px;
+    font-weight: 600;
+    width: 70px;
+    z-index: 200;
+}
+/******************************/
+.tab-content {
+    border-top: 1px solid #abc;
+    display: none;
+    padding: 10px;
+    overflow-y: hidden; 
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 90%;
+    width: 19%;
+    margin-bottom: -100px;
+    box-sizing: border-box;
+}  
+/* Activa el scroll del menú */
+.scroll-menu {
+    border-bottom: 1px solid #a79c72;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    width: 100%;
+}  
+.scroll-menu input {
+    display: none;  
+}  
+.scroll-menu label {
+    color: #FFFFFF;
+    border: 1px solid transparent;
+    display: inline-block;
+    margin: 0 0 -1px;
+    padding: 4px 15px;/* Pestaña */
+    font-weight: normal;    
+    text-align: center;
+}  
+.scroll-menu label:hover {
+    color: #789;
+    cursor: pointer;
+}  
+.scroll-menu input:checked + label {
+    color: #a79c72;
+    
+    background-color: rgba(46,57,53,0.5);
+    border-top: 4px solid #a79c72;
+    border-left: 1px solid #2E3935;
+    border-right: 1px solid #2E3935;
+    border-bottom: 1px solid #a79c72;
+    display: inline-block;
+} 
+/* BEGIN - Scroll personalizado */
+.scroll-menu::-webkit-scrollbar {
+    -webkit-appearance: none;
+}  
+.scroll-menu::-webkit-scrollbar:vertical {
+    width:10px;
+}
+.scroll-menu::-webkit-scrollbar-button:increment,
+.scroll-menu::-webkit-scrollbar-button {
+    display: none;
+}   
+.scroll-menu::-webkit-scrollbar:horizontal {
+    background-color: #abc;
+    height: 10px;  
+}  
+.scroll-menu::-webkit-scrollbar-thumb {
+    background-color: #0AF;
+    border-radius: 20px;
+    /*border: 1px solid #024f49;*/
+}
+.scroll-menu::-webkit-scrollbar-track {
+    border-radius: 10px;  
+}
+/* END - Scroll personalizado */
+
+h6{
+    font-size: 12px !important;
+    margin: 4px 0 !important;
+    font-weight: 750;
+}
+hr {
+    border-top: 1px solid rgb(255 255 255);
+    margin: 4px 0;
+}
+.row-field {
+    width: 100%;
+}
+.row-field label {
+    font-weight: 700;
+    margin-bottom: 0;
+}
+.row-field .content-p {
+    width: 100%;
+}
+.row-field .content-p p {
+    margin-bottom: 8px;
+}
+.row-field .cbo-vista{
+    height: 35px !important;
+    margin-bottom: 10px !important;
+    width: 95%;
+}
+
+.canvas-pie,
+.canvas-bar {
+    display: none;
+}
+.col-table table {
+    color: #FFFFFF;
+}
+
+.col-table .dataTables_wrapper 
+.col-table .dataTables_length 
+.col-table select,
+.col-table select option {
+    color: #FFFFFF;
+}
+
+table.dataTable th.dt-center,
+table.dataTable td.dt-center,
+table.dataTable td.dataTables_empty,
+table.dataTable thead>tr>th.sorting,
+table.dataTable thead>tr>th.sorting_asc,
+table.dataTable thead>tr>th.sorting_desc,
+table.dataTable thead>tr>th.sorting_asc_disabled,
+table.dataTable thead>tr>th.sorting_desc_disabled,
+table.dataTable thead>tr>td.sorting,
+table.dataTable thead>tr>td.sorting_asc,
+table.dataTable thead>tr>td.sorting_desc,
+table.dataTable thead>tr>td.sorting_asc_disabled,
+table.dataTable thead>tr>td.sorting_desc_disabled {
+    color: #FFFFFF;
+    font-size: 12px !important;
+}
+table.dataTable thead th,
+table.dataTable thead td {
+    border-bottom: 0px solid rgba(0, 0, 0, 0.3);
+    padding: 5px;    
+    font-size: 12px !important;
+}
+#ID_TB_VISITAS_length,
+#ID_TB_VISITAS_filter,
+#ID_TB_DENUNCIAS_length,
+#ID_TB_DENUNCIAS_filter {
+    display: none !important;
+}
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    color: #FFFFFF !important;
+    padding: 0;
+}
+
+.tab-content .row-col {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.tab-content .row-col p { 
+    margin: 0;
+    padding: 7px;
+}
+
+/* GIS LOAD */
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-ellipsis div {
+    position: absolute;
+    top: 33px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #fff;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  .lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }

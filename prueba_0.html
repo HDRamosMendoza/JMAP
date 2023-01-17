@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- TITLE -->
+    <title>MINDEF | Policia Nacional del Perú (PNP)</title>
+    <link rel="icon" href="./img/icon.jpg">
+    <!-- META -->
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport"     content="width=device-width, initial-scale=1">
+    <meta name="description"  content="Ministerio de Defensa | Policia Nacional del Perú"/>
+    <meta name="keywords"     content="Denuncias"/>
+    <meta name="author"       content="Ing. Francisco Rojas, Ing. Oswaldo Bardales e Ing. Heber Daniel Ramos Mendoza"/>
+    <meta name="copyright"    content="Copyright - Ministerio de Defensa (MINDEF) | Policia Nacional del Perú (PNP)"/>
+    <!-- CSS -->
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+  </head>
+  <body>
+    <section class="col-content">
+      <!-- -->
+      <section class="col-left">
+        <div class="scroll-menu">
+
+          <input id="Tab-1" type="radio" name="tabs">
+          <label for="Tab-1">
+            Jurisdiccion
+          </label>
+
+          <input id="Tab-2" type="radio" name="tabs">
+          <label for="Tab-2">
+            Medidas
+          </label>
+
+          <input id="Tab-3" type="radio" name="tabs">
+          <label for="Tab-3" name="Presas">
+            Visitas
+          </label>
+
+          <input id="Tab-4" type="radio" name="tabs">
+          <label for="Tab-4" name="Medida">
+            Auditoria
+          </label>
+
+          <input id="Tab-5" type="radio" name="tabs">
+          <label for="Tab-5" name="Medida">
+            Usuarios
+          </label>
+
+        </div>
+
+        <section id="Tab-1_TAB" class="tab-content">
+          <div>
+            <form>
+              <h6>1. DATOS DE USUARIO</h6>
+              <hr>
+              <!-- Usuario -->
+              <div class="row-field">
+                  <label>Usuario:</label>
+                  <div class="content-p">
+                    <p id="ID_Usuario">... Cargando</p>
+                  </div>
+              </div>
+              <!-- Jurisdiccion -->
+              <div class="row-field">
+                <label>Código Jurisdicción:</label>
+                <div class="content-p">                
+                    <p id="ID_CodigoJurisdiccion">... Cargando</p>                
+                </div>
+              </div>
+              <!-- Comisaria -->
+              <div class="row-field">
+                <label>Comisaría:</label>
+                <div class="content-p">
+                  <p id="ID_Comisaria">... Cargando</p>
+                </div>
+              </div>
+              <h6>2. FILTROS</h6>
+              <hr>
+              <!-- Vista -->
+              <div class="row-field">
+                <label>Vista:</label>
+                <select class="form-control form-control-sm cbo-vista" id="ID_Vista" style="height:30px !important;">
+                  <option selected>... Cargando</option>
+                </select>
+              </div>
+              <!--
+              <h6>3. GRÁFICO</h6>
+              <hr>
+              -->
+              <section class="canvas-pie">
+                <canvas id="ID_Pie"></canvas>
+              </section>
+              <section class="canvas-bar">
+                <canvas id="ID_Bar" height="300"></canvas>
+              </section>
+            </form>
+          </div>
+        </section>
+        <!-- MEDIDAS DE PROTECCIÓN -->
+        <section id="Tab-2_TAB" class="tab-content">
+          <div>
+            <h6>MEDIDAS DE PROTECCIÓN</h6>
+            <div class="tab-list">
+              <hr>
+              <strong>>></strong> Dar clic al registro de la columna de <strong>MEDIDAS</strong> en la lista de <strong>DENUNCIAS</strong>.
+            </div>
+          </div>
+        </section>
+        <!-- /MEDIDAS DE PROTECCIÓN -->
+        
+        <section id="Tab-3_TAB" class="tab-content">
+          <div>
+            <h6>VISITA DE CONTROL PNP</h6>
+            <div class="tab-list">
+            </div>
+          </div>
+        </section>
+
+        <section id="Tab-4_TAB" class="tab-content">
+          <div>
+            <h6>Reportes</h6>
+          </div>
+        </section>
+
+        <section id="Tab-5_TAB" class="tab-content">
+          <div>
+            <h6>USUARIOS</h6>
+          </div>
+        </section>
+
+      </section>
+
+      <section class="col-right">
+        <!-- MAPA -->
+        <div id="app-map"></div>
+        <!-- /MAPA -->
+        <!-- RESPONSE -->
+        <div id="app-table" class="col-table">
+          <!-- TABLE -->
+          <table class="table table-sm display nowrap" id="ID_TB_DENUNCIAS" class="display" style="width:100%">
+            <thead>
+              <tr>
+                <th colspan="8" class="text-center bg-light" style="color:#000000">DATO GENERAL</th>
+                <th colspan="6" class="text-center bg-secondary">DENUNCIA</th>
+                <th colspan="6" class="text-center bg-dark">HECHO</th>
+              </tr>
+              <tr>
+                <th>#</th>
+                <th class="text-center">ZOOM</th>
+                <th class="text-center">MEDIDAS</th>
+                <th class="text-center">DENUNCIA</th>
+                
+                <th class="text-center">COMISARÍA</th>
+                <!--<th class="text-center">Modalidad</th>
+                <th class="text-center">Tipo</th>-->
+                <th class="text-center">REGIÓN</th>
+                <th class="text-center">LIBRO</th>
+  
+                <th class="text-center">TIPO DE DOC.</th>
+                <th class="text-center">DEPARTAMENTO</th>
+                <th class="text-center">PROVINCIA</th>
+                <th class="text-center">DISTRITO</th>
+                <th class="text-center">UBIGEO</th>
+                <th class="text-center">DIRECCIÓN</th>
+                <th class="text-center">FECHA DE REGISTRO</th>
+  
+                <th class="text-center">VISITA</th>
+                <th class="text-center">DEPARTAMENTO</th>
+                <th class="text-center">PROVINCIA</th>
+                <th class="text-center">DISTRITO</th>
+                <th class="text-center">UBIGEO</th>
+                <th class="text-center">FECHA DE REGISTRO</th>
+                
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <!-- <tfoot>
+              <tr>
+                <th></th>
+                <th>Zoom</th>
+              </tr>
+            </tfoot>-->
+          </table>
+          <!-- /TABLE -->
+        </div>
+        <!-- /RESPONSE -->        
+      </section>
+
+    </section>
+
+    <button class="btn btn-secondary btn-sm btn-salir" type="button" id="ID_SALIR">
+      SALIR
+    </button>
+
+    <!-- Modal - MEDIDAS DE PROTECCION -->
+    <div class="modal fade" id="ID_Modal_Detalle" tabindex="-1" role="dialog" aria-hidden="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">INFORMACION DE MEDIDAS DE PROTECCIÓN</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">
+              <i class="fa fa-times"></i> Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Modal - MEDIDAS DE PROTECCION -->
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.2.0/js/dataTables.dateTime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>    
+    <script src="./js/script.js"></script>
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/jmap-app-js@7_Kathmandu_HF3"></script>
+  </body>
+</html>
