@@ -1,0 +1,20 @@
+{
+    "lyr": [
+        {
+            "alias": "Seleccione Temática",
+            "value": "00"
+        },{
+            "alias": "01 Medidas de Protección",
+            "value": "01"
+        },{
+            "alias": "02 Tipo de Violencia",
+            "value": "02"
+        },{
+            "alias": "03 Nivel de Riesgo",
+            "value": "03"
+        },{
+            "alias": "04 Número de Visitas",
+            "value": "04"
+        }   
+    ]    
+}
