@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <style>
+      html,
+      body {
+        padding: 0px;
+        margin: 0px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script type="text/javascript">
+      function getFavouriteExtension(extensionId) {
+        const LAYER_ID = "favourite-custom-layer"
+        const CLICK_LISTENER_ID = "favourite-click-listener"
+        const ACTION_ADD = "FAVOURITE_ADD_LOCATION"
+        const ACTION_DEL = "FAVOURITE_DEL_LOCATION"
+        const ACTION_SET_VISIBILITY = "FAVOURITE_SET_LAYER_VISIBILITY"
+        let panelContainerId
+        let visibilityContainerId
+        let locationsContainerId
+        let reduxUnsubscribe
+        let map
+        let previousLocationCount = 0
+        let previousLayerVisibility = true
+        // return the JMap application current redux state
+        function getAppState() {
+          return JMap.getDataStore().getState().external["jmap_app"]
+        }
+        // return the favourite extension current redux state
+        function getFavouriteState() {
+          return JMap.getDataStore().getState().external[extensionId]
+        }
+        // return the primary color in use by JMap Application
+        function getPrimaryColor() {
+          return getAppState().ui.theme.palette.text.primary
+        }
+        // return the secondary color in use by JMap Application
+        function getSecondaryColor() {
+          return getAppState().ui.theme.palette.text.secondary
+        }
+        /**
+         * This is the favourite service.
+         * It is where we change the redux store values,
+         * then the reduxChangeHandler function will react to state changes.
+         **/
+        const favouriteSVC = {
+          // returns all existing locations
+          getLocations: () => getFavouriteState().locations.slice(),
+          // return true if the layer is displayed on the map
+          getLayerVisibility: () => getFavouriteState().isLayerVisible,
+          // add a location in the redux store
+          add: location =>
+            JMap.getDataStore().dispatch({
+              type: ACTION_ADD,
+              location: location
+            }),
+          // remove a location in the redux store at the index
+          del: index =>
+            JMap.getDataStore().dispatch({
+              type: ACTION_DEL,
+              index: index
+            }),
+          // if false, hide the layer on the map, else show it
+          setLayerVisibility: visibility =>
+            JMap.getDataStore().dispatch({
+              type: ACTION_SET_VISIBILITY,
+              visibility: visibility
+            })
+        }
+        /**
+         * This is the redux reducer, a pure javascript function.
+         * It reacts to the actions you dispatch, and changes the data in the store.
+         **/
+        function reduxReducer(currentFavouriteState, action) {
+          if (!currentFavouriteState) {
+            currentFavouriteState = {
+              locations: [],
+              isLayerVisible: previousLayerVisibility
+            }
+          }
+          switch (action.type) {
+            case ACTION_ADD: {
+              const newFavouriteState = { ...currentFavouriteState, locations: currentFavouriteState.locations.slice() }
+              newFavouriteState.locations.push(action.location)
+              return newFavouriteState
+            }
+            case ACTION_DEL: {
+              const newFavouriteState = { ...currentFavouriteState, locations: currentFavouriteState.locations.slice() }
+              newFavouriteState.locations.splice(action.index, 1)
+              return newFavouriteState
+            }
+            case ACTION_SET_VISIBILITY: {
+              return { ...currentFavouriteState, isLayerVisible: action.visibility }
+            }
+          }
+          return currentFavouriteState
+        }
+        // Create the dom elements to display the layer visibility checkbox
+        function displayLayerVisibility() {
+          if (!visibilityContainerId) {
+            visibilityContainerId = `${panelContainerId}-visibility`
+          }
+          const panelContainer = document.getElementById(panelContainerId)
+          panelContainer.style.color = getPrimaryColor()
+          panelContainer.style.padding = "1rem"
+          const container = document.createElement("div")
+          container.id = visibilityContainerId
+          const span = document.createElement("span")
+          span.innerHTML = "Display locations on map"
+          container.append(span)
+          const input = document.createElement("input")
+          input.type = "checkbox"
+          input.style.cursor = "pointer"
+          input.style.marginLeft = "1rem"
+          input.checked = favouriteSVC.getLayerVisibility()
+          input.onclick = () => favouriteSVC.setLayerVisibility(!favouriteSVC.getLayerVisibility())
+          container.append(input)
+          panelContainer.append(container)
+        }
+        // Create the dom elements to display the locations list
+        function displayLocations() {
+          if (!locationsContainerId) {
+            locationsContainerId = `${panelContainerId}-locations`
+          }
+          const panelContainer = document.getElementById(panelContainerId)
+          const container = document.createElement("div")
+          container.id = locationsContainerId
+          container.style.marginTop = "1rem"
+          container.style.display = "flex"
+          container.style.flexDirection = "column"
+          const locations = favouriteSVC.getLocations()
+          if (locations.length === 0) {
+            const span = document.createElement("span")
+            span.innerHTML = "Click on the map to add your favourite locations"
+            span.style.color = getSecondaryColor()
+            container.append(span)
+          } else {
+            for (var i = 0; i < locations.length; i++) {
+              const location = locations[i]
+              const index = i
+              const locationContainer = document.createElement("div")
+              locationContainer.style.marginTop = "1rem"
+              locationContainer.style.display = "flex"
+              locationContainer.style.alignItems = "center"
+              locationContainer.style.justifyContent = "space-between"
+              const locationSpan = document.createElement("span")
+              locationSpan.innerHTML = `LNG = ${location.x.toFixed(5)} | LAT = ${location.y.toFixed(5)}`
+              locationContainer.append(locationSpan)
+              const button = document.createElement("button")
+              button.innerHTML = "X"
+              button.title = "Click to remove the location"
+              button.style.cursor = "pointer"
+              button.onclick = () => favouriteSVC.del(index)
+              locationContainer.append(button)
+              container.append(locationContainer)
+            }
+          }
+          panelContainer.append(container)
+        }
+        // Remove in the dom the container, given the container id
+        function removeContainer(containerId) {
+          const container = document.getElementById(containerId)
+          if (container) {
+            container.remove()
+          }
+        }
+        function refreshLocations() {
+          removeContainer(locationsContainerId)
+          displayLocations()
+        }
+        // Locations have changed in the store, we add or remove it in the mapbox source.
+        function refreshLayer() {
+          map.getSource(LAYER_ID).setData({
+            type: "FeatureCollection",
+            features: getFavouriteState().locations.map(l => ({
+              type: "Feature",
+              geometry: { type: "Point", coordinates: [l.x, l.y] }
+            }))
+          })
+        }
+        /**
+         * The redux function that is called when the redux state changed.
+         * If a favourite value has changed it refreshes the ui or the map.
+         **/
+        function reduxChangeHandler() {
+          const state = getFavouriteState()
+          if (previousLocationCount !== state.locations.length) {
+            previousLocationCount = state.locations.length
+            refreshLocations()
+            refreshLayer()
+          }
+          if (previousLayerVisibility !== state.isLayerVisible) {
+            previousLayerVisibility = state.isLayerVisible
+            map.setLayoutProperty(LAYER_ID, "visibility", state.isLayerVisible ? "visible": "none")
+          }
+        }
+        /**
+         * The map interactor, more details on:
+         * https://k2geospatial.github.io/jmap-app/latest/modules/jmap.map.interaction.html
+         **/
+        const mapInteractor = {
+          init: mapboxMap => {
+            map = mapboxMap
+            map.addSource(LAYER_ID, {
+              type: "geojson",
+              data: { type: "FeatureCollection", features: [] }
+            })
+            map.addLayer({
+              id: LAYER_ID,
+              type: "circle",
+              source: LAYER_ID,
+              paint: {
+                "circle-radius": 10,
+                "circle-color": "#0066ff"
+              }
+            })
+            JMap.Event.Map.on.click(CLICK_LISTENER_ID, params => {
+              favouriteSVC.add(params.location)
+            })
+            JMap.Event.Map.deactivate(CLICK_LISTENER_ID)
+          },
+          activate: () => {
+            JMap.Map.getMap().doubleClickZoom.disable()
+            JMap.Event.Map.activate(CLICK_LISTENER_ID)
+          },
+          deactivate: () => {
+            JMap.Map.getMap().doubleClickZoom.enable()
+            JMap.Event.Map.deactivate(CLICK_LISTENER_ID)
+          },
+          terminate: () => {
+            JMap.Event.Map.remove(CLICK_LISTENER_ID)
+            map.removeLayer(LAYER_ID)
+            map.removeSource(LAYER_ID)
+          }
+        }
+        // Returns the extension object that will be registered by the JMap Application
+        return {
+          id: extensionId,
+          panelIcon: "fa-thumbtack",
+          panelTitle: "My favourite locations",
+          panelTooltip: "My favourite locations",
+          onPanelCreation: containerId => {
+            if (!panelContainerId) {
+              panelContainerId = containerId
+            }
+            displayLayerVisibility()
+            displayLocations()
+            reduxUnsubscribe = JMap.getDataStore().subscribe(reduxChangeHandler)
+          },
+          onPanelDestroy: () => {
+            removeContainer(visibilityContainerId)
+            removeContainer(locationsContainerId)
+            reduxUnsubscribe()
+          },
+          interactor: mapInteractor,
+          serviceToExpose: favouriteSVC,
+          storeReducer: reduxReducer
+        }
+      }
+      const extensionId = "favourite"
+      window.JMAP_OPTIONS = {
+        restBaseUrl: "http://172.31.0.48/services/rest/v2.0",
+        anonymous: true,
+        projectId: 7,
+        map: {
+          center: {
+            x: -73.92251114687645,
+            y: 45.52559621002098
+          },
+          zoom: 9.07038517536697
+        },
+        hideMainLayout: true,
+        application: {
+          panel: `${extensionId}-panel`, // will display the favourite panel when application starts
+          extensions: [getFavouriteExtension(extensionId)] // will register the favourite extension
+        }
+      }
+    </script>
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/jmap-app-js@7_Kathmandu_HF3"></script>
+  </body>
+</html>
