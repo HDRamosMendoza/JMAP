@@ -1,0 +1,18 @@
+.table,
+.dataTables_info,
+.dataTables_length,
+.dataTables_paginate {
+    font-size: 12px;
+    color: #000000;
+}
+#ID_CONTENT_HIDE,
+#ID_CONTENT_SHOW {
+    display: none;
+}
+p.text-secondary{
+    margin: 0 !important;
+    font-size: 12px;
+}
+#ID_TB_AUDITORIA_HIDE {
+    display: none !important;
+}
