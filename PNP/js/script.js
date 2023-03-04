@@ -21,6 +21,7 @@ const USUARIO_IP  = localStorage.getItem("usuIP");
 const USUARIO_PC  = "";
 const USUARIO_SID = localStorage.getItem("usuCodComi");
 const USUARIO_PNP = localStorage.getItem("usuUnidadPNP");
+
 const USUARIO_ARR = USUARIO_ROL!== null? USUARIO_ROL.map(item=>item.rolNombre) : "";
 let TB_DENUNCIAS  = null, TB_VISITAS = null;
 let _bbox = null;
@@ -28,8 +29,14 @@ let _denunciaID = 0;
 
 $('#ID_TB_BUSCAR').on('click', function() {
     try {
-        let _data = $('#ID_BTN_DATO').val();
-        TB_DENUNCIAS.search(_data).draw(false);
+        let _data = $('#ID_BTN_DATO').val();        
+        _denunciaJurisdiccion(
+            USUARIO_SID,
+            _elementById("ID_GEOREFERENCIADO").checked ? 1 : 0,
+            _elementById("ID_MEDIDA_PROTECCION").checked ? 1 : 0,
+            _data.length > 0 ? _data : 0
+        );
+        /*TB_DENUNCIAS.search(_data).draw(false);*/
     } catch(error) {
         console.error(`ID_TB_BUSCAR': ${error.name} - ${error.message}`);
     }
@@ -37,8 +44,11 @@ $('#ID_TB_BUSCAR').on('click', function() {
 
 $('#ID_TB_LIMPIAR').on('click', function() {
     try {
-        $('#ID_BTN_DATO').val("");
-        TB_DENUNCIAS.search("").draw(false);
+        _elementById("ID_BTN_DATO").value = '';
+        _elementById("ID_GEOREFERENCIADO").checked = false;
+        _elementById("ID_MEDIDA_PROTECCION").checked = false;        
+        _denunciaJurisdiccion(USUARIO_SID)
+        /*TB_DENUNCIAS.search("").draw(false);*/
     } catch(error) {
         console.error(`ID_TB_LIMPIAR: ${error.name} - ${error.message}`);
     }
@@ -139,13 +149,20 @@ let _datatableDenuncias = function() {
 };
 _datatableDenuncias();
 /* Liksta de Denuncias de la Jurisdiccion */
-let _denunciaJurisdiccion = function(_jurisdiccion) {
+let _denunciaJurisdiccion = function(_jurisdiccion,_georeferencia=0,_medidaProteccion=0,_denuncia=0) {
     try {
+        
+        console.log(`JURISDCCION: ${_jurisdiccion}`);
+        console.log(`GEOREFERENCIACION: ${_georeferencia}`);
+        console.log(`MEDIDA PROTECCION: ${_medidaProteccion}`);
+        console.log(`DENUNCIA: ${_denuncia}`);
+
+        _elementById("ID_LOAD").style.display="block";
         const ID_MED_PRO = "#Tab-2_TAB .tab-list";
         TB_DENUNCIAS.clear().draw();
         $.ajax({
             "async": true,
-            "url": `http://localhost:8099/denuncia/lista/${_jurisdiccion}`,
+            "url": `http://localhost:8099/denuncia/lista/${_jurisdiccion}/${_georeferencia}/${_medidaProteccion}/${_denuncia}`,
             "method": "GET",
             "timeout": 0,
             "headers": {
@@ -182,8 +199,10 @@ let _denunciaJurisdiccion = function(_jurisdiccion) {
                         element[`cantVisitasPnp`], /* Ocultar */
                     ]).draw(false);
                 });
+                _elementById("ID_LOAD").style.display="none";
             }
           }).fail(function(msg) {
+            _elementById("ID_LOAD").style.display="none";
             TB_DENUNCIAS.clear().draw();
             $(ID_MED_PRO).html(`<div class="alert alert-danger" role="alert">
                     <strong>Error</strong> al cargar la Información !
@@ -484,6 +503,34 @@ let _tabActive = function() {
 };
 _tabActive();
 _elementById('Tab-1').click();
+
+_elementById("ID_GEOREFERENCIADO").addEventListener("click", function() {
+    try {
+        let _value = _elementById('ID_BTN_DATO').value;
+        _denunciaJurisdiccion(
+            USUARIO_SID,
+            this.checked ? 1 : 0,
+            _elementById("ID_MEDIDA_PROTECCION").checked ? 1 : 0,
+            _value.length > 0 ? _value : 0
+        )
+    } catch(error) {
+        console.error(`ID_GEOREFERENCIADO: ${error.name} - ${error.message}`);
+    }
+});
+
+_elementById("ID_MEDIDA_PROTECCION").addEventListener("click", function() {
+    try {
+        let _value = _elementById('ID_BTN_DATO').value;
+        _denunciaJurisdiccion(
+            USUARIO_SID,
+            _elementById("ID_GEOREFERENCIADO").checked?1:0,
+            this.checked ? 1 : 0,
+            _value.length > 0 ? _value : 0
+        )        
+    } catch(error) {
+        console.error(`ID_MEDIDA_PROTECCION: ${error.name} - ${error.message}`);
+    }
+});
 /* Activar Mapa de Calor */
 _elementById("ID_CALOR").addEventListener("click", function() {
     try {

@@ -285,3 +285,10 @@ select.form-control {
 #ID_VISITA_FECHA {
     font-size: 12px;
  }
+
+.load_zindex {
+    position: absolute;
+    z-index: 10000;
+    left: 50%;
+    top: 140px;
+}

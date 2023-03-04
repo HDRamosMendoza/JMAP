@@ -260,12 +260,28 @@
         <!-- /MAPA -->
         <!-- RESPONSE -->
         <div id="app-table" class="col-table">
+          <div style="position: relative;">
+            <center>
+              <div style="width: 100%; height: 100%;" class="lds-ellipsis text-center load_zindex" id="ID_LOAD"><div></div><div></div><div></div><div></div></div>
+            </center>
+          </div>
           <div class="row" style="padding: 5px; margin: 0 !important">
+            
+            <div class="form-check" style="color: #FFFFFF; margin: 6px 10px;">
+              <input class="form-check-input" type="checkbox" value="" id="ID_GEOREFERENCIADO">
+              <label class="form-check-label" for="ID_GEOREFERENCIADO">Georeferenciado</label>
+            </div>
+            
+            <div class="form-check" style="color: #FFFFFF; margin: 6px 10px;">
+              <input class="form-check-input" type="checkbox" value="" id="ID_MEDIDA_PROTECCION">
+              <label class="form-check-label" for="ID_MEDIDA_PROTECCION">Medidas de Protección</label>
+            </div>
+
             <!-- Filtro -->
             <div class="col-sm-2">
               <input type="text" class="form-control form-control-sm" placeholder="Ingrese dato" id="ID_BTN_DATO">
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
               <button class="btn btn-sm btn-secondary" id="ID_TB_BUSCAR">
                 <i class="fa fa-search"></i> Consultar
               </button>
@@ -273,11 +289,14 @@
                 <i class="fa fa-eraser"></i> Limpiar
               </button>
             </div>
+
+            
             <!-- Mapa de Calor -->
-            <div class="form-check float-right" style="color: #FFFFFF; margin: 6px 0px;">
+            <div class="form-check float-right" style="color: #FFFFFF; margin: 6px 10px;">
               <input class="form-check-input" type="checkbox" value="" id="ID_CALOR">
-              <label class="form-check-label" for="ID_CALOR"> &nbsp;Concentración de Denuncias</label>
+              <label class="form-check-label" for="ID_CALOR">Concentración de Denuncias</label>
             </div>
+            
           </div>
           <!-- TABLE -->
           <table class="table table-sm display nowrap" id="ID_TB_DENUNCIAS" class="display" style="width:100%">
